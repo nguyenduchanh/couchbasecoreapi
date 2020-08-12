@@ -1,8 +1,10 @@
 package main
 
 import (
+	"couchbasecoreapi/router"
 	"fmt"
 	"gopkg.in/couchbase/gocb.v1"
+	_ "io/ioutil"
 )
 
 type User struct {
@@ -14,11 +16,9 @@ type User struct {
 //tam thoi load mac dinh server cuar minh de thanh hinh
 //sau do se load tham so tu file json
 func main() {
-
+	router.Router()
 }
-func GetAllBucket() {
 
-}
 func Example() {
 	cluster, _ := gocb.Connect("couchbase://localhost")
 	cluster.Authenticate(gocb.PasswordAuthenticator{

@@ -9,6 +9,11 @@ import (
 	"time"
 )
 
+var ConnectionString = "localhost"
+var Port = "8091"
+var UserName = "Administrator"
+var Password = "abc123"
+
 type Configuration struct {
 	ConnectionString string   `json:"connection_string"`
 	Port             string   `json:"port"`
@@ -19,6 +24,11 @@ type Configuration struct {
 	LastUpdate       string   `json:"last_update"`
 }
 
+func GetConnectionString() string {
+	//http://Administrator:abc123@localhost:8091
+	connectString := "http://" + UserName + ":" + Password + "@" + ConnectionString + ":" + Port
+	return connectString
+}
 func WriteFile() {
 	filename := "config.json"
 	err := checkFile(filename)
