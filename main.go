@@ -1,16 +1,13 @@
 package main
 
 import (
+	"couchbasecoreapi/model"
 	"couchbasecoreapi/router"
+	"encoding/json"
 	"fmt"
 	"gopkg.in/couchbase/gocb.v1"
 	_ "io/ioutil"
 )
-
-type User struct {
-	Name string `json:"name"`
-	Age  string `json:"age"`
-}
 
 //api for couchbase management
 //tam thoi load mac dinh server cuar minh de thanh hinh
@@ -20,7 +17,7 @@ func main() {
 }
 
 func Example() {
-	cluster, _ := gocb.Connect("couchbase://localhost")
+	cluster, _ := gocb.Connect("http://localhost")
 	cluster.Authenticate(gocb.PasswordAuthenticator{
 		Username: "Administrator",
 		Password: "abc123",
@@ -28,24 +25,35 @@ func Example() {
 
 	bucket, _ := cluster.OpenBucket("classroom", "")
 
-	bucket.Manager("", "").CreatePrimaryIndex("", true, false)
-
-	bucket.Upsert("u:kingarthur",
-		User{
-			Name: "kingarthur",
-			Age:  "33",
-		}, 0)
-
-	// Get the value back
-	var inUser User
-	bucket.Get("u:kingarthur", &inUser)
-	fmt.Printf("User: %v\n", inUser)
-
-	// Use query
-	query := gocb.NewN1qlQuery("SELECT * FROM classroom ")
-	rows, _ := bucket.ExecuteN1qlQuery(query, []interface{}{"African Swallows"})
-	var row interface{}
-	for rows.Next(&row) {
-		fmt.Printf("Row: %v", row)
+	myQuery := gocb.NewN1qlQuery("SELECT name, age FROM `classroom` ")
+	rows, err := bucket.ExecuteN1qlQuery(myQuery, nil)
+	if err != nil {
+		fmt.Println("ERROR EXECUTING N1QL QUERY:", err)
 	}
+
+	// Iterate through rows and print output
+	var row model.Query
+	var retValues []model.Query
+
+	// Stream the values returned from the query into a typed array of structs
+	for rows.Next(&row) {
+
+		// Check if the current row has a value for FAA, if it does it's an airport
+		//  and should be added to the return values
+		retValues = append(retValues, row)
+
+		// Set the row to an empty struct, to prevent current values being added
+		//  to the next row in the results collection returned by the query
+		row = model.Query{}
+	}
+
+	// Marshal array of structs to JSON
+	bytes, err := json.Marshal(retValues)
+	if err != nil {
+		fmt.Println("ERROR PROCESSING STREAMING OUTPUT:", err)
+	}
+	//var t []model.Query
+	json.Unmarshal(bytes, retValues)
+	fmt.Print(retValues)
+	// Exiting
 }

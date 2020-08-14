@@ -11,6 +11,7 @@ import (
 
 var ConnectionString = "localhost"
 var Port = "8091"
+var QueryPort = "8093"
 var UserName = "Administrator"
 var Password = "abc123"
 
@@ -28,6 +29,10 @@ func GetConnectionString() string {
 	//http://Administrator:abc123@localhost:8091
 	connectString := "http://" + UserName + ":" + Password + "@" + ConnectionString + ":" + Port
 	return connectString
+}
+func GetQueryConnectionString() string {
+	connecString := "http://" + UserName + ":" + Password + "@" + ConnectionString + ":" + QueryPort
+	return connecString
 }
 func WriteFile() {
 	filename := "config.json"
