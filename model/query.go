@@ -3,7 +3,6 @@ package model
 import (
 	"bytes"
 	"encoding/json"
-	gocb "gopkg.in/couchbase/gocb.v2"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -26,7 +25,6 @@ type Metrics struct {
 }
 type QueryModel struct{}
 
-var bucket *gocb.Bucket
 var (
 	httpClient *http.Client
 )

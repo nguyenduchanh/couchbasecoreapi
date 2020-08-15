@@ -45,12 +45,6 @@ func (s *BucketModel) GetAllBucket(clusterName string) (data []Bucket, error err
 		os.Exit(1)
 	}
 	responseData, err := ioutil.ReadAll(response.Body)
-	//var b Bucket
 	json.Unmarshal(responseData, &data)
-	//var result []string
-	//
-	//for  i := int32(0); i < int32(len(data)); i++{
-	//	result = append(result, data[i].Name)
-	//}
 	return data, nil
 }
