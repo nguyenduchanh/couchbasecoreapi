@@ -48,3 +48,6 @@ func (s *BucketModel) GetAllBucket(clusterName string) (data []Bucket, error err
 	json.Unmarshal(responseData, &data)
 	return data, nil
 }
+func (s *BucketModel) CreateNewBucket(clusterName string) (statusCode int, err error) {
+	return 202, nil
+}
