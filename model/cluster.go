@@ -2,6 +2,7 @@ package model
 
 import (
 	"couchbasecoreapi/config"
+	view_model "couchbasecoreapi/view-model"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -30,8 +31,8 @@ type Pool struct {
 type ClusterModel struct {
 }
 
-func (c *ClusterModel) GetAllCluster(connectionString string, userName string, password string) (data Cluster, error error) {
-	connectionStr := config.GetConnectionString(connectionString, userName, password)
+func (c *ClusterModel) SelectAllCluster(cluster view_model.ClusterSearchCommand) (data Cluster, error error) {
+	connectionStr := config.GetConnectionString(cluster.ConnectionString, cluster.UserName, cluster.Password)
 	response, err := http.Get(connectionStr + "/pools")
 	if err != nil {
 		fmt.Print(err.Error())

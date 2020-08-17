@@ -14,3 +14,9 @@ type BucketCreateCommand struct {
 	ThreadsNumber   string `json:"threadsNumber"`
 	EvictionPolicy  string `json:"evictionPolicy"`
 }
+type BucketSearchCommand struct {
+	ConnectionString string `json:"connectionstring" binding:"required"`
+	UserName         string `json:"username" binding:"required"`
+	Password         string `json:"password" binding:"required"`
+	ClusterName      string `json:"clustername" binding:"required"`
+}
