@@ -30,9 +30,9 @@ type Pool struct {
 type ClusterModel struct {
 }
 
-func (c *ClusterModel) GetAllCluster() (data Cluster, error error) {
-	connectionString := config.GetConnectionString()
-	response, err := http.Get(connectionString + "/pools")
+func (c *ClusterModel) GetAllCluster(connectionString string, userName string, password string) (data Cluster, error error) {
+	connectionStr := config.GetConnectionString(connectionString, userName, password)
+	response, err := http.Get(connectionStr + "/pools")
 	if err != nil {
 		fmt.Print(err.Error())
 		os.Exit(1)

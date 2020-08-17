@@ -9,11 +9,8 @@ import (
 	"time"
 )
 
-var ConnectionString = "localhost"
 var Port = "8091"
 var QueryPort = "8093"
-var UserName = "Administrator"
-var Password = "abc123"
 
 type Configuration struct {
 	ConnectionString string   `json:"connection_string"`
@@ -25,13 +22,13 @@ type Configuration struct {
 	LastUpdate       string   `json:"last_update"`
 }
 
-func GetConnectionString() string {
+func GetConnectionString(connectionString string, userName string, password string) string {
 	//http://Administrator:abc123@localhost:8091
-	connectString := "http://" + UserName + ":" + Password + "@" + ConnectionString + ":" + Port
+	connectString := "http://" + userName + ":" + password + "@" + connectionString + ":" + Port
 	return connectString
 }
-func GetQueryConnectionString() string {
-	connecString := "http://" + UserName + ":" + Password + "@" + ConnectionString + ":" + QueryPort
+func GetQueryConnectionString(connectionString string, userName string, password string) string {
+	connecString := "http://" + userName + ":" + password + "@" + connectionString + ":" + QueryPort
 	return connecString
 }
 func WriteFile() {

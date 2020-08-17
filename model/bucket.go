@@ -37,9 +37,9 @@ type Bucket struct {
 }
 type BucketModel struct{}
 
-func (s *BucketModel) GetAllBucket(clusterName string) (data []Bucket, error error) {
-	connectionString := config.GetConnectionString() + "/pools/" + clusterName + "/buckets"
-	response, err := http.Get(connectionString)
+func (s *BucketModel) GetAllBucket(connectionString string, userName string, password string, clusterName string) (data []Bucket, error error) {
+	connectionStr := config.GetConnectionString(connectionString, userName, password) + "/pools/" + clusterName + "/buckets"
+	response, err := http.Get(connectionStr)
 	if err != nil {
 		fmt.Print(err.Error())
 		os.Exit(1)

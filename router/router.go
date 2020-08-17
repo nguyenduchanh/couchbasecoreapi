@@ -15,15 +15,15 @@ func Router() {
 		cluster := new(controller.ClusterController)
 		query := new(controller.QueryController)
 		//add bucket router
-		v1.GET("/buckets/:clustername", bucket.GetAllBucket)
+		v1.GET("/buckets/:connectionstring/:username/:password/:clustername", bucket.GetAllBucket)
 		//add cluster router
-		v1.GET("/clusters", cluster.GetCluster)
+		v1.GET("/clusters/:connectionstring/:username/:password", cluster.GetCluster)
 		//add query router
-		v1.POST("/query/:query", query.SelectAll)
+		v1.POST("/query/:connectionstring/:username/:password/:query", query.SelectAll)
 	}
 	router.NoRoute(func(c *gin.Context) {
 		c.String(http.StatusNotFound, "Not Found")
 	})
 
-	router.Run(":8080")
+	router.Run(":8999")
 }

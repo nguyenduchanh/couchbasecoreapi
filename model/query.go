@@ -2,6 +2,7 @@ package model
 
 import (
 	"bytes"
+	"couchbasecoreapi/config"
 	"encoding/json"
 	"io/ioutil"
 	"log"
@@ -50,22 +51,11 @@ func createHTTPClient() *http.Client {
 
 	return client
 }
+func (s *QueryModel) SelectAll(connectionString string, userName string, password string, query string) (_query interface{}, error error) {
 
-func (s *QueryModel) SelectAll(query string) (_query Query, error error) {
-	//resp, err := http.PostForm("http://Administrator:abc123@localhost:8093/query/service",
-	//	url.Values{"statement": {"SELECT * FROM `classroom`"}})
-	//if err != nil {
-	//	panic(err)
-	//}
-	//var res map[string]Query
-	//
-	//json.NewDecoder(resp.Body).Decode(&res)
-	//
-	//responseData, err := ioutil.ReadAll(resp.Body)
-	//json.Unmarshal(responseData, &_query)
 	data := url.Values{}
-	data.Set("statement", "SELECT * FROM `classroom`")
-	var endPoint string = "http://Administrator:abc123@localhost:8093/query/service"
+	data.Set("statement", query)
+	var endPoint = config.GetQueryConnectionString(connectionString, userName, password) + "/query/service"
 
 	req, err := http.NewRequest("POST", endPoint, bytes.NewBufferString(data.Encode()))
 	if err != nil {
@@ -82,7 +72,6 @@ func (s *QueryModel) SelectAll(query string) (_query Query, error error) {
 			log.Fatalf("Couldn't parse response body. %+v", err)
 		}
 		json.Unmarshal(body, &_query)
-		//log.Println("Response Body:", string(body))
 	}
 	return _query, nil
 
