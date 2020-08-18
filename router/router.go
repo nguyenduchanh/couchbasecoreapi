@@ -2,9 +2,16 @@ package router
 
 import (
 	"couchbasecoreapi/controller"
+	"couchbasecoreapi/model"
+	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
 	"net/http"
+	"os"
 )
+
+var portModel = new(model.PortModel)
 
 func CORS() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -21,6 +28,8 @@ func CORS() gin.HandlerFunc {
 	}
 }
 func Router() {
+	port, _ := portModel.ReadPortJson()
+	fmt.Print(port)
 	router := gin.Default()
 	router.Use(CORS())
 	v1 := router.Group("/v1")
@@ -39,6 +48,14 @@ func Router() {
 	router.NoRoute(func(c *gin.Context) {
 		c.String(http.StatusNotFound, "Not Found")
 	})
+	if port.Port != "" {
+		router.Run(":" + port.Port)
+	} else {
+		p := new(model.PortJson)
+		p.Port = "8999"
+		jsonString, _ := json.Marshal(p)
+		ioutil.WriteFile("port.json", jsonString, os.ModePerm)
+		router.Run(":8999")
+	}
 
-	router.Run(":8999")
 }
