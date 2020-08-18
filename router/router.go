@@ -40,6 +40,7 @@ func Router() {
 		query := new(controller.QueryController)
 		//add bucket router
 		v1.POST("/buckets", bucket.SelectAll)
+		v1.POST("/buckets/new", bucket.CreateNewBucket)
 		//add cluster router
 		v1.POST("/clusters", cluster.SelectAllCluster)
 		//add query router

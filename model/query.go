@@ -9,7 +9,6 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"time"
 )
 
 type Query struct {
@@ -28,31 +27,6 @@ type Metrics struct {
 }
 type QueryModel struct{}
 
-var (
-	httpClient *http.Client
-)
-
-const (
-	MaxIdleConnections int = 20
-	RequestTimeout     int = 5
-)
-
-// init HTTPClient
-func init() {
-	httpClient = createHTTPClient()
-}
-
-// createHTTPClient for connection re-use
-func createHTTPClient() *http.Client {
-	client := &http.Client{
-		Transport: &http.Transport{
-			MaxIdleConnsPerHost: MaxIdleConnections,
-		},
-		Timeout: time.Duration(RequestTimeout) * time.Second,
-	}
-
-	return client
-}
 func (s *QueryModel) SelectAll(connectionString string, userName string, password string, query string) (_query interface{}, error error) {
 	data := url.Values{}
 	data.Set("statement", query)
@@ -62,7 +36,7 @@ func (s *QueryModel) SelectAll(connectionString string, userName string, passwor
 		log.Fatalf("Error Occured. %+v", err)
 	}
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	response, err := httpClient.Do(req)
+	response, err := config.HttpClient.Do(req)
 	if err != nil && response == nil {
 		log.Fatalf("Error sending request to API endpoint. %+v", err)
 	} else {
@@ -84,7 +58,7 @@ func (s *QueryModel) QueryExecute(query view_model.QueryExecuteCommand) (_query 
 		log.Fatalf("Error Occured. %+v", err)
 	}
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	response, err := httpClient.Do(req)
+	response, err := config.HttpClient.Do(req)
 	if err != nil && response == nil {
 		log.Fatalf("Error sending request to API endpoint. %+v", err)
 	} else {
