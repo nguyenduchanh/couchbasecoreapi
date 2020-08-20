@@ -41,6 +41,9 @@ func Router() {
 		//add bucket router
 		v1.POST("/buckets", bucket.SelectAll)
 		v1.POST("/buckets/new", bucket.CreateNewBucket)
+		v1.POST("/buckets/detail", bucket.GetBucketByName)
+		v1.POST("/buckets/edit", bucket.EditBucket)
+		v1.POST("/buckets/delete", bucket.DeleteBucket)
 		//add cluster router
 		v1.POST("/clusters", cluster.SelectAllCluster)
 		//add query router
@@ -58,5 +61,4 @@ func Router() {
 		ioutil.WriteFile("port.json", jsonString, os.ModePerm)
 		router.Run(":8999")
 	}
-
 }

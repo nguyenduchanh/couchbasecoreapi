@@ -1,6 +1,6 @@
 package view_model
 
-type BucketCreateCommand struct {
+type BucketEditCommand struct {
 	Name                                     string `json:"name"` // new bucket name
 	RamQuotaMB                               string `json:"ramQuotaMB"`
 	BucketType                               string `json:"bucketType"`
@@ -34,4 +34,11 @@ type BucketSearchCommand struct {
 	UserName         string `json:"username" binding:"required"`
 	Password         string `json:"password" binding:"required"`
 	ClusterName      string `json:"clustername" binding:"required"`
+}
+type BucketDetailSearchCommand struct {
+	ConnectionString string `json:"connectionstring" binding:"required"`
+	UserName         string `json:"username" binding:"required"`
+	Password         string `json:"password" binding:"required"`
+	ClusterName      string `json:"clustername" binding:"required"`
+	BucketName       string `json:"bucketname" binding:"required"`
 }
