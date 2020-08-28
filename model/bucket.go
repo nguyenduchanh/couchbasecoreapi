@@ -134,7 +134,7 @@ func (s *BucketModel) EditBucket(newBucket view_model.BucketEditCommand) (status
 	data.Set("allowedTimePeriod[toMinute]", newBucket.AllowedTimePeriodToMinute)
 	data.Set("allowedTimePeriod[abortOutside]", newBucket.AllowedTimePeriodAbortOutside)
 	var endPoint = config.GetConnectionString(newBucket.ConnectionString, newBucket.UserName, newBucket.Password) + "/pools/" + newBucket.ClusterName + "/buckets/" + newBucket.Name
-	req, err := http.NewRequest("POST", endPoint, bytes.NewBufferString(data.Encode()))
+	req, err := http.NewRequest("PUT", endPoint, bytes.NewBufferString(data.Encode()))
 	if err != nil {
 		log.Fatalf("Error Occured. %+v", err)
 	}
